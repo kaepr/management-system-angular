@@ -16,11 +16,7 @@ export class EmailPasswordLoginComponent implements OnInit {
 
   serverMessage: string;
 
-  constructor(
-    private afAuth: AngularFireAuth,
-    private fb: FormBuilder,
-    public auth: AuthService
-  ) {}
+  constructor(private fb: FormBuilder, public auth: AuthService) {}
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -32,6 +28,8 @@ export class EmailPasswordLoginComponent implements OnInit {
 
   changeType(val: "login" | "signup") {
     this.type = val;
+    this.loading = false;
+    this.serverMessage = "";
   }
 
   get isLogin() {
@@ -70,11 +68,11 @@ export class EmailPasswordLoginComponent implements OnInit {
 
     try {
       if (this.isLogin) {
-        await this.afAuth.signInWithEmailAndPassword(email, password);
+        await this.auth.SignIn(email, password);
       }
 
       if (this.isSignup) {
-        await this.afAuth.createUserWithEmailAndPassword(email, password);
+        await this.auth.SignUp(email, password);
       }
     } catch (err) {
       this.serverMessage = err;

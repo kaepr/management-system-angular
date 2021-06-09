@@ -22,7 +22,6 @@ export class AuthService {
        * If user from firebase exists, then set that object inside localstorage
        * else sets a empty object, which should be handled properly
        */
-
       if (user) {
         this.userData = user;
         localStorage.setItem("user", JSON.stringify(this.userData));
@@ -35,30 +34,30 @@ export class AuthService {
   }
 
   async SignIn(email: string, password: string) {
-    return this.afAuth
-      .signInWithEmailAndPassword(email, password)
-      .then((res) => {
-        this.ngZone.run(() => {
-          this.router.navigate(["home"]);
-        });
-        this.SetUserData(res.user);
-      })
-      .catch((err) => {
-        // TODO Need to change to toasts later
-        window.alert(err.message);
+    try {
+      const res = await this.afAuth.signInWithEmailAndPassword(email, password);
+      await this.SetUserData(res.user);
+      this.ngZone.run(() => {
+        this.router.navigate(["/"]);
       });
+    } catch (err) {
+      throw err;
+    }
   }
 
   async SignUp(email: string, password: string) {
-    return this.afAuth
-      .createUserWithEmailAndPassword(email, password)
-      .then((res) => {
-        this.SetUserData(res.user);
-      })
-      .catch((err) => {
-        // TODO Need to change to toasts later
-        window.alert(err.message);
+    try {
+      const res = await this.afAuth.createUserWithEmailAndPassword(
+        email,
+        password
+      );
+      await this.SetUserData(res.user);
+      this.ngZone.run(() => {
+        this.router.navigate(["/"]);
       });
+    } catch (err) {
+      throw err;
+    }
   }
 
   async SetUserData(user: any) {
@@ -88,7 +87,7 @@ export class AuthService {
   get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem("user") || "{}");
     console.log("inside is logged in:", user);
-    
+
     if (Object.keys(user).length !== 0) {
       return true;
     }
