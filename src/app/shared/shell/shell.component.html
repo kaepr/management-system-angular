@@ -10,9 +10,22 @@
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
       <a mat-list-item routerLink="/" (click)="drawer.close()">Home</a>
-      <a mat-list-item routerLink="/login" (click)="drawer.close()">Login</a>
-      <a mat-list-item routerLink="/books" (click)="drawer.close()"
-        >All Books</a
+      <a
+        mat-list-item
+        *ngIf="!auth.isLoggedIn"
+        routerLink="/login"
+        (click)="drawer.close()"
+        >Login</a
+      >
+      <a
+        mat-list-item
+        *ngIf="auth.isLoggedIn"
+        routerLink="/book"
+        (click)="drawer.close()"
+        >Books</a
+      >
+      <a mat-list-item *ngIf="auth.isLoggedIn" (click)="auth.SignOut()"
+        >Logout</a
       >
     </mat-nav-list>
   </mat-sidenav>
@@ -33,8 +46,11 @@
       <div class="fill-space"></div>
 
       <div *ngIf="!(isHandset$ | async)">
-        <a mat-button routerLink="/login">Login</a>
-        <a mat-button routerLink="/books">All Books</a>
+        <a *ngIf="!auth.isLoggedIn" mat-button routerLink="/login">Login</a>
+        <a *ngIf="auth.isLoggedIn" mat-button routerLink="/book">Books</a>
+        <a *ngIf="auth.isLoggedIn" mat-button (click)="auth.SignOut()"
+          >Logout</a
+        >
       </div>
     </mat-toolbar>
 

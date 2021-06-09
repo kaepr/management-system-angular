@@ -5,12 +5,14 @@ import {
   AngularFirestoreDocument,
 } from "@angular/fire/firestore";
 import { Router } from "@angular/router";
+import { first } from "rxjs/operators";
 
 @Injectable({
   providedIn: "root",
 })
 export class AuthService {
   userData: any;
+  currentUserData: any;
   constructor(
     public afs: AngularFirestore,
     public afAuth: AngularFireAuth,
@@ -24,11 +26,10 @@ export class AuthService {
        */
       if (user) {
         this.userData = user;
+        this.currentUserData = user;
         localStorage.setItem("user", JSON.stringify(this.userData));
-        JSON.parse(localStorage.getItem("user") || "{}");
       } else {
         localStorage.setItem("user", "{}");
-        JSON.parse(localStorage.getItem("user") || "{}");
       }
     });
   }
@@ -38,7 +39,7 @@ export class AuthService {
       const res = await this.afAuth.signInWithEmailAndPassword(email, password);
       await this.SetUserData(res.user);
       this.ngZone.run(() => {
-        this.router.navigate(["/"]);
+        this.router.navigate([""]);
       });
     } catch (err) {
       throw err;
@@ -53,7 +54,7 @@ export class AuthService {
       );
       await this.SetUserData(res.user);
       this.ngZone.run(() => {
-        this.router.navigate(["/"]);
+        this.router.navigate([""]);
       });
     } catch (err) {
       throw err;
@@ -61,7 +62,6 @@ export class AuthService {
   }
 
   async SetUserData(user: any) {
-    console.log("inside set user data = ", user);
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(
       `users/${user.uid}`
     );
@@ -78,18 +78,47 @@ export class AuthService {
   }
 
   async SignOut() {
-    return this.afAuth.signOut().then(() => {
+    try {
+      await this.afAuth.signOut();
       localStorage.removeItem("user");
       this.router.navigate(["login"]);
-    });
+    } catch (err) {
+      console.log(err);
+    }
+    return;
+  }
+
+  userLogged() {
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    if (Object.keys(user).length !== 0) {
+      return true;
+    }
+    return false;
   }
 
   get isLoggedIn(): boolean {
-    const user = JSON.parse(localStorage.getItem("user") || "{}");
-    console.log("inside is logged in:", user);
+    return this.userLogged();
+  }
 
-    if (Object.keys(user).length !== 0) {
-      return true;
+  getData() {
+    return this.afAuth.authState.pipe(first()).toPromise();
+  }
+
+  async getFireStoreData(userID: string) {
+    const userDoc = this.afs.collection("users").doc(`${userID}`);
+    const data = await userDoc.valueChanges().pipe(first()).toPromise();
+    return data;
+  }
+
+  async isAdmin() {
+    if (this.userLogged()) {
+      const user = await this.getData();
+      console.log("UID here = ", user?.uid);
+      if (user) {
+        const fsData: any = await this.getFireStoreData(user.uid);
+        console.log("fsData", fsData);
+        return fsData.isAdmin;
+      }
     }
     return false;
   }
