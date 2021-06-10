@@ -21,19 +21,16 @@ export class AdminGuard implements CanActivate {
   ) {}
 
   async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    console.log("in admin guard");
-
     if (!this.auth.isLoggedIn) {
       this.snack.authError();
       return this.router.parseUrl("/login");
     }
+    await this.auth.isAdmin();
 
-    const bool = await this.auth.isAdmin();
-
-    if (!bool) {
+    if (!this.auth.isUserAdmin) {
       this.snack.adminError();
       return this.router.parseUrl("/login");
     }
-    return bool;
+    return this.auth.isUserAdmin;
   }
 }

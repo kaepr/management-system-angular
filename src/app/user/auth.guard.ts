@@ -28,8 +28,6 @@ export class AuthGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    console.log("in auth guard", this.auth.isLoggedIn);
-
     if (!this.auth.isLoggedIn) {
       this.snack.authError();
       return this.router.parseUrl("/login");

@@ -24,6 +24,13 @@
         (click)="drawer.close()"
         >Books</a
       >
+      <a
+        mat-list-item
+        *ngIf="auth.isUserAdmin"
+        routerLink="/admin"
+        (click)="drawer.close()"
+        >Admin</a
+      >
       <a mat-list-item *ngIf="auth.isLoggedIn" (click)="auth.SignOut()"
         >Logout</a
       >
@@ -48,6 +55,7 @@
       <div *ngIf="!(isHandset$ | async)">
         <a *ngIf="!auth.isLoggedIn" mat-button routerLink="/login">Login</a>
         <a *ngIf="auth.isLoggedIn" mat-button routerLink="/book">Books</a>
+        <a *ngIf="auth.isUserAdmin" mat-button routerLink="/admin">Admin</a>
         <a *ngIf="auth.isLoggedIn" mat-button (click)="auth.SignOut()"
           >Logout</a
         >

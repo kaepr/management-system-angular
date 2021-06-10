@@ -12,24 +12,25 @@ import { first } from "rxjs/operators";
 })
 export class AuthService {
   userData: any;
-  currentUserData: any;
+  isUserAdmin: boolean;
   constructor(
     public afs: AngularFirestore,
     public afAuth: AngularFireAuth,
     public router: Router,
     public ngZone: NgZone
   ) {
-    this.afAuth.authState.subscribe((user) => {
+    this.afAuth.authState.subscribe(async (user) => {
       /**
        * If user from firebase exists, then set that object inside localstorage
        * else sets a empty object, which should be handled properly
        */
       if (user) {
         this.userData = user;
-        this.currentUserData = user;
         localStorage.setItem("user", JSON.stringify(this.userData));
+        this.isAdmin();
       } else {
         localStorage.setItem("user", "{}");
+        this.isUserAdmin = false;
       }
     });
   }
@@ -37,10 +38,12 @@ export class AuthService {
   async SignIn(email: string, password: string) {
     try {
       const res = await this.afAuth.signInWithEmailAndPassword(email, password);
-      await this.SetUserData(res.user);
+
       this.ngZone.run(() => {
         this.router.navigate([""]);
       });
+
+      await this.isAdmin();
     } catch (err) {
       throw err;
     }
@@ -82,6 +85,7 @@ export class AuthService {
       await this.afAuth.signOut();
       localStorage.removeItem("user");
       this.router.navigate(["login"]);
+      this.isUserAdmin = false;
     } catch (err) {
       console.log(err);
     }
@@ -113,13 +117,14 @@ export class AuthService {
   async isAdmin() {
     if (this.userLogged()) {
       const user = await this.getData();
-      console.log("UID here = ", user?.uid);
       if (user) {
         const fsData: any = await this.getFireStoreData(user.uid);
-        console.log("fsData", fsData);
-        return fsData.isAdmin;
+        this.isUserAdmin = fsData.isAdmin;
+
+        return this.isUserAdmin;
       }
     }
-    return false;
+    this.isUserAdmin = false;
+    return this.isUserAdmin;
   }
 }

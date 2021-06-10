@@ -24,5 +24,9 @@ export class ShellComponent implements OnInit {
       shareReplay()
     );
 
-  ngOnInit(): void {}
+  isAdminRole: boolean;
+
+  ngOnInit(): void {
+    this.isAdminRole = this.auth.isUserAdmin;
+  }
 }
