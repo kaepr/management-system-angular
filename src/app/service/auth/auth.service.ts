@@ -6,6 +6,7 @@ import {
 } from "@angular/fire/firestore";
 import { Router } from "@angular/router";
 import { first } from "rxjs/operators";
+import { IUser } from "src/app/interfaces/User";
 
 @Injectable({
   providedIn: "root",
@@ -39,12 +40,7 @@ export class AuthService {
     try {
       const res = await this.afAuth.signInWithEmailAndPassword(email, password);
 
-      // this.ngZone.run(() => {
-      //   this.router.navigate([""]);
-      // });
-
       this.router.navigate([""]);
-
       await this.isAdmin();
     } catch (err) {
       throw err;
@@ -57,11 +53,8 @@ export class AuthService {
         email,
         password
       );
-      await this.SetUserData(res.user);
-      // this.ngZone.run(() => {
-      //   this.router.navigate([""]);
-      // });
 
+      await this.SetUserData(res.user);
       this.router.navigate([""]);
     } catch (err) {
       throw err;
@@ -73,7 +66,7 @@ export class AuthService {
       `users/${user.uid}`
     );
 
-    const userData = {
+    const userData: IUser = {
       uid: user.uid,
       email: user.email,
       isAdmin: false,
@@ -120,7 +113,7 @@ export class AuthService {
 
   async isAdmin() {
     if (this.userLogged()) {
-      const user = await this.getData();
+      const user: any = await this.getData();
       if (user) {
         const fsData: any = await this.getFireStoreData(user.uid);
         this.isUserAdmin = fsData.isAdmin;
