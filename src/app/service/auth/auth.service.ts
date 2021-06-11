@@ -39,9 +39,11 @@ export class AuthService {
     try {
       const res = await this.afAuth.signInWithEmailAndPassword(email, password);
 
-      this.ngZone.run(() => {
-        this.router.navigate([""]);
-      });
+      // this.ngZone.run(() => {
+      //   this.router.navigate([""]);
+      // });
+
+      this.router.navigate([""]);
 
       await this.isAdmin();
     } catch (err) {
@@ -56,9 +58,11 @@ export class AuthService {
         password
       );
       await this.SetUserData(res.user);
-      this.ngZone.run(() => {
-        this.router.navigate([""]);
-      });
+      // this.ngZone.run(() => {
+      //   this.router.navigate([""]);
+      // });
+
+      this.router.navigate([""]);
     } catch (err) {
       throw err;
     }
