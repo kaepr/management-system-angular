@@ -1,0 +1,68 @@
+<div>
+  <mat-card class="card">
+    <h1>Create a New Book</h1>
+    <form
+      [formGroup]="createBookForm"
+      (ngSubmit)="createBookSubmit()"
+      class="form"
+    >
+      <mat-form-field [color]="title?.valid && 'accent'">
+        <input
+          matInput
+          formControlName="title"
+          type="text"
+          placeholder="Title"
+          autocomplete="off"
+        />
+
+        <mat-error *ngIf="title?.invalid && title?.dirty">
+          Enter title for book
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field [color]="author?.valid && 'accent'">
+        <input
+          matInput
+          formControlName="author"
+          type="text"
+          placeholder="author"
+          autocomplete="off"
+        />
+
+        <mat-error *ngIf="author?.invalid && author?.dirty">
+          Enter author for book
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field [color]="description?.valid && 'accent'">
+        <input
+          matInput
+          formControlName="description"
+          type="text"
+          placeholder="description"
+          autocomplete="off"
+        />
+
+        <mat-error *ngIf="description?.invalid && description?.dirty">
+          Enter description for book
+        </mat-error>
+      </mat-form-field>
+
+      <mat-error class="server-error">{{ serverMessage }}</mat-error>
+
+      <button
+        mat-raised-button
+        color="accent"
+        type="submit"
+        [disabled]="createBookForm.invalid || loading"
+      >
+        Create Book
+      </button>
+    </form>
+  </mat-card>
+</div>
+
+<h1>All Books</h1>
+<div *ngFor="let book of books">
+  <pre>{{ book | json }}</pre>
+</div>

@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "angular-management-system": {
+      "hosting": {
+        "management-system": [
+          "angular-management-system"
+        ]
+      }
+    }
+  }
+}
