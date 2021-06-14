@@ -70,6 +70,7 @@ export class AuthService {
       uid: user.uid,
       email: user.email,
       isAdmin: false,
+      books: [],
     };
 
     return userRef.set(userData, {
