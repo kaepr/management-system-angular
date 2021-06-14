@@ -1,4 +1,28 @@
 <h1>All Books</h1>
 <div *ngFor="let book of books">
   <pre>{{ book | json }}</pre>
+  <button
+    [disabled]="loading"
+    color="accent"
+    mat-raised-button
+    (click)="issueBook(book)"
+  >
+    Issue Book
+  </button>
+</div>
+
+<h1>Books in Wait</h1>
+<div *ngIf="user">
+  <div *ngFor="let book of user.books">
+    <div *ngIf="!book.issued">
+      <pre>{{ book | json }}</pre>
+    </div>
+  </div>
+
+  <h1>Issued Books</h1>
+  <div *ngFor="let book of user.books">
+    <div *ngIf="book.issued">
+      <pre>{{ book | json }}</pre>
+    </div>
+  </div>
 </div>

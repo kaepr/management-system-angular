@@ -1,10 +1,13 @@
+import { IBook } from "./Book";
+
 interface UserBooks {
-  id: string;
+  book: IBook;
   issued: boolean;
+  issueId: string;
 }
 
 export interface IUser {
-  uid?: string;
+  uid: string;
   email: string;
   isAdmin: boolean;
   books?: UserBooks[];

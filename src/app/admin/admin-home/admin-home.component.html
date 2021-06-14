@@ -66,3 +66,24 @@
 <div *ngFor="let book of books">
   <pre>{{ book | json }}</pre>
 </div>
+
+<div>
+  <h1>All User Data</h1>
+  <div *ngFor="let user of users">
+    <div *ngFor="let book of user.books">
+      <div *ngIf="!book.issued">
+        <p>Individual Book</p>
+        <h2>{{ user.email }}</h2>
+        <pre>{{ book | json }}</pre>
+        <button
+          [disabled]="loading"
+          color="accent"
+          mat-raised-button
+          (click)="allowIssue(book.issueId, user)"
+        >
+          Allow
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

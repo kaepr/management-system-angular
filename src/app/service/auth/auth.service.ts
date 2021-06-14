@@ -1,11 +1,11 @@
-import { Injectable, NgZone } from "@angular/core";
+import { Injectable, NgZone, OnDestroy } from "@angular/core";
 import { AngularFireAuth } from "@angular/fire/auth";
 import {
   AngularFirestore,
   AngularFirestoreDocument,
 } from "@angular/fire/firestore";
 import { Router } from "@angular/router";
-import { first } from "rxjs/operators";
+import { first, switchMap } from "rxjs/operators";
 import { IUser } from "src/app/interfaces/User";
 
 @Injectable({
