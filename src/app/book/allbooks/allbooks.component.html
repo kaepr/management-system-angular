@@ -16,6 +16,15 @@
   <div *ngFor="let book of user.books">
     <div *ngIf="!book.issued">
       <pre>{{ book | json }}</pre>
+      <img [src]="book.book.imageUrl" height="100" width="100" />
+      <button
+        [disabled]="loading"
+        color="accent"
+        mat-raised-button
+        (click)="removeBook(book.issueId)"
+      >
+        Remove Book
+      </button>
     </div>
   </div>
 
@@ -23,6 +32,14 @@
   <div *ngFor="let book of user.books">
     <div *ngIf="book.issued">
       <pre>{{ book | json }}</pre>
+      <button
+        [disabled]="loading"
+        color="accent"
+        mat-raised-button
+        (click)="removeBook(book.issueId)"
+      >
+        Remove Book
+      </button>
     </div>
   </div>
 </div>

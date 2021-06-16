@@ -9,6 +9,12 @@ import { tap } from "rxjs/operators";
 export class SnackService {
   constructor(private snackBar: MatSnackBar, private router: Router) {}
 
+  bookError(errorMessage: string) {
+    this.snackBar.open(errorMessage, "OK", {
+      duration: 4000,
+    });
+  }
+
   authError() {
     this.snackBar.open("You must be logged in!", "OK", {
       duration: 5000,

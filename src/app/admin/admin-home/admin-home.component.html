@@ -48,13 +48,37 @@
         </mat-error>
       </mat-form-field>
 
+      <mat-form-field [color]="price?.valid && 'accent'">
+        <input
+          matInput
+          formControlName="price"
+          type="text"
+          placeholder="Price in Rupees"
+          autocomplete="off"
+        />
+
+        <mat-error *ngIf="price?.invalid && price?.dirty">
+          Enter price for book
+        </mat-error>
+      </mat-form-field>
+
+      <input type="file" (change)="uploadFile($event)" />
+      <div>{{ uploadPercent | async }}</div>
+
+      <img
+        *ngIf="imgUrl.length !== 0"
+        [src]="imgUrl"
+        height="100"
+        width="100"
+      />
+
       <mat-error class="server-error">{{ serverMessage }}</mat-error>
 
       <button
         mat-raised-button
         color="accent"
         type="submit"
-        [disabled]="createBookForm.invalid || loading"
+        [disabled]="createBookForm.invalid || loading || imgUrl.length === 0"
       >
         Create Book
       </button>
@@ -64,7 +88,19 @@
 
 <h1>All Books</h1>
 <div *ngFor="let book of books">
-  <pre>{{ book | json }}</pre>
+  <mat-card class="book-card">
+    <img [src]="book.imageUrl" />
+    <div class="book-info">
+      <div class="content">
+        <div class="title">{{ book.title }}</div>
+        <div class="author">{{ book.author }}</div>
+        <div class="description">{{ book.description }}</div>
+      </div>
+      <div class="book-footer">
+        <div class="price">{{ book.price }}</div>
+      </div>
+    </div>
+  </mat-card>
 </div>
 
 <div>

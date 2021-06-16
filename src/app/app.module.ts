@@ -13,6 +13,7 @@ import { AngularFireModule } from "@angular/fire";
 import { AngularFirestoreModule } from "@angular/fire/firestore";
 import { AngularFireAuthModule } from "@angular/fire/auth";
 import { AuthService } from "./service/auth/auth.service";
+import { AngularFireStorageModule, BUCKET } from "@angular/fire/storage";
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],
@@ -24,6 +25,7 @@ import { AuthService } from "./service/auth/auth.service";
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireAuthModule,
+    AngularFireStorageModule,
   ],
   providers: [AuthService],
   bootstrap: [AppComponent],
