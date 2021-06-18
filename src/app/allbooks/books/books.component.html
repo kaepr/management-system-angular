@@ -1,0 +1,23 @@
+<div *ngFor="let book of books">
+  <div class="container">
+    <img [src]="book.imageUrl" />
+    <div class="content">
+      <p class="title">{{ book.title }}</p>
+      <p class="author">{{ book.author }}</p>
+      <p class="description">{{ book.description }}</p>
+      <div class="footer">
+        <p class="price">
+          {{ book.price }}
+        </p>
+        <button
+          [disabled]="loading"
+          color="accent"
+          mat-raised-button
+          (click)="issueBook(book)"
+        >
+          Issue Book
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

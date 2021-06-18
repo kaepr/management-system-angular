@@ -1,3 +1,5 @@
+$background-blue: #c2c2c2;
+
 .sidenav-container {
   height: 100%;
 }
@@ -14,10 +16,12 @@
 
 .sidenav {
   width: 200px;
+  background: $background-blue;
 }
 
-.sidenav .mat-toolbar {
-  background: inherit;
+.sidenav,
+.mat-toolbar {
+  background: $background-blue;
 }
 
 .mat-toolbar.mat-primary {

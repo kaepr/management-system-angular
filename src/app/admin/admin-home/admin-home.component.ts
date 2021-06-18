@@ -36,9 +36,11 @@ export class AdminHomeComponent implements OnInit, OnDestroy {
     this.createBookForm = this.fb.group({
       title: ["Book Title", [Validators.required]],
       author: ["Author Name", [Validators.required]],
-      description: ["Book description", [Validators.required]],
+      description: [
+        "Book description",
+        [Validators.required, Validators.maxLength(200)],
+      ],
       price: ["150", [Validators.required]],
-      // imageUrl: ["", [Validators.required]],
     });
 
     this.book_sub = this.adminService

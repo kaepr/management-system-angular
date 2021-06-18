@@ -26,6 +26,14 @@ const routes: Routes = [
       import("./admin/admin.module").then((module) => module.AdminModule),
     canActivate: [AdminGuard],
   },
+  {
+    path: "allbooks",
+    loadChildren: () =>
+      import("./allbooks/allbooks.module").then(
+        (module) => module.AllbooksModule
+      ),
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({

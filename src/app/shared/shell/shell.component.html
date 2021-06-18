@@ -22,7 +22,14 @@
         *ngIf="auth.isLoggedIn"
         routerLink="/book"
         (click)="drawer.close()"
-        >Books</a
+        >My Books</a
+      >
+      <a
+        mat-list-item
+        *ngIf="auth.isLoggedIn"
+        routerLink="/allbooks"
+        (click)="drawer.close()"
+        >All Books</a
       >
       <a
         mat-list-item
@@ -54,7 +61,10 @@
 
       <div *ngIf="!(isHandset$ | async)">
         <a *ngIf="!auth.isLoggedIn" mat-button routerLink="/login">Login</a>
-        <a *ngIf="auth.isLoggedIn" mat-button routerLink="/book">Books</a>
+        <a *ngIf="auth.isLoggedIn" mat-button routerLink="/book">My Books</a>
+        <a *ngIf="auth.isLoggedIn" mat-button routerLink="/allbooks"
+          >All Books</a
+        >
         <a *ngIf="auth.isUserAdmin" mat-button routerLink="/admin">Admin</a>
         <a *ngIf="auth.isLoggedIn" mat-button (click)="auth.SignOut()"
           >Logout</a
