@@ -4,7 +4,7 @@ import { AngularFireStorage } from "@angular/fire/storage";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Subscription, Observable } from "rxjs";
 import { finalize } from "rxjs/operators";
-import { IUser } from "src/app/interfaces/User";
+import { IUser, IUserBooks } from "src/app/interfaces/User";
 import { AdminService } from "src/app/service/admin/admin.service";
 import { IBook } from "../../interfaces/Book";
 
@@ -14,8 +14,8 @@ import { IBook } from "../../interfaces/Book";
   styleUrls: ["./admin-home.component.scss"],
 })
 export class AdminHomeComponent implements OnInit, OnDestroy {
-  books: IBook[];
   users: IUser[];
+  users_filtered: IUser[];
   book_sub: Subscription;
   user_sub: Subscription;
   createBookForm: FormGroup;
@@ -43,17 +43,26 @@ export class AdminHomeComponent implements OnInit, OnDestroy {
       price: ["150", [Validators.required]],
     });
 
-    this.book_sub = this.adminService
-      .getAllBooks()
-      .subscribe((books: IBook[]) => {
-        this.books = books;
-      });
-
     this.user_sub = this.afs
       .collection("users")
       .valueChanges()
       .subscribe((users: any) => {
         this.users = users;
+        this.users_filtered = this.users?.map((user) => {
+          const books: any = user.books?.filter((item) => !item.issued);
+          if (books?.length > 0) {
+            const obj: IUser = {
+              email: user.email,
+              books: books,
+              isAdmin: user.isAdmin,
+              uid: user.uid,
+            };
+            return obj;
+          }
+          return;
+        });
+
+        console.log("filtered ", this.users_filtered);
       });
   }
 
@@ -98,7 +107,7 @@ export class AdminHomeComponent implements OnInit, OnDestroy {
     this.loading = true;
 
     try {
-      const updatedBooks = user.books?.filter((book) => {
+      const updatedBooks = user?.books?.filter((book) => {
         if (book.issueId == bookId) {
           book.issued = true;
           return book;
@@ -108,7 +117,7 @@ export class AdminHomeComponent implements OnInit, OnDestroy {
       });
 
       user.books = updatedBooks;
-      await this.afs.doc(`users/${user.uid}`).update(user);
+      await this.afs.doc(`users/${user?.uid}`).update(user);
     } catch (err) {
       console.log("Error in updating issue info", err);
     }
@@ -138,7 +147,6 @@ export class AdminHomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.book_sub.unsubscribe();
     this.user_sub.unsubscribe();
   }
 }

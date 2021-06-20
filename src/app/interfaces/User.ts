@@ -1,6 +1,6 @@
 import { IBook } from "./Book";
 
-interface UserBooks {
+export interface IUserBooks {
   book: IBook;
   issued: boolean;
   issueId: string;
@@ -10,5 +10,5 @@ export interface IUser {
   uid: string;
   email: string;
   isAdmin: boolean;
-  books?: UserBooks[];
+  books?: IUserBooks[];
 }

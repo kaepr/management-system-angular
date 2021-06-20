@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 import { AdminService } from "src/app/service/admin/admin.service";
 import { Subscription } from "rxjs";
 import { IBook } from "../../interfaces/Book";
-import { IUser } from "../../interfaces/User";
+import { IUser, IUserBooks } from "../../interfaces/User";
 import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { SnackService } from "src/app/service/snack/snack.service";
@@ -13,9 +13,9 @@ import { SnackService } from "src/app/service/snack/snack.service";
   styleUrls: ["./allbooks.component.scss"],
 })
 export class AllbooksComponent implements OnInit, OnDestroy {
-  books: IBook[];
+  issued_books: IUserBooks[] | undefined;
+  waiting_books: IUserBooks[] | undefined;
   user: IUser;
-  book_sub: Subscription;
   user_sub: Subscription;
   loading: boolean;
   user_uid: string = JSON.parse(localStorage.getItem("user") || "{}").uid;
@@ -28,52 +28,15 @@ export class AllbooksComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.book_sub = this.adminService
-      .getAllBooks()
-      .subscribe((books: IBook[]) => {
-        this.books = books;
-      });
-
     this.user_sub = this.afs
       .doc(`users/${this.user_uid}`)
       .valueChanges()
       .subscribe((data: any) => {
         this.user = data;
+
+        this.issued_books = this.user.books?.filter((item) => item.issued);
+        this.waiting_books = this.user.books?.filter((item) => !item.issued);
       });
-  }
-
-  async issueBook(bookData: IBook) {
-    this.loading = true;
-    console.log("bookData = ", bookData);
-
-    let exists: boolean = false;
-
-    this.user.books?.filter((book) => {
-      console.log("book", book);
-      if (bookData.id == book.book.id) {
-        exists = true;
-      }
-    });
-
-    if (exists) {
-      this.snack.bookError("Book already issued !!");
-      this.loading = false;
-      return;
-    }
-
-    try {
-      const userBooks = this.user.books;
-      userBooks?.push({
-        issued: false,
-        book: bookData,
-        issueId: this.afs.createId(),
-      });
-      await this.afs.doc(`users/${this.user_uid}`).update({ books: userBooks });
-    } catch (err) {
-      console.log("Error while updating", err);
-    }
-
-    this.loading = false;
   }
 
   async removeBook(issueId: string) {
@@ -92,7 +55,6 @@ export class AllbooksComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.book_sub.unsubscribe();
     this.user_sub.unsubscribe();
   }
 }

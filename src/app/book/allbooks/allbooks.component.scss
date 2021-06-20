@@ -1,0 +1,134 @@
+$shade1: #f9f9f9;
+$shade2: #d5d8de;
+$shade3: #aebac2;
+$shade4: #869da3;
+$shade5: #618180;
+$shade6: #43655a;
+
+h1 {
+  text-align: center;
+  font-family: "Montserrat";
+  margin: 2em 2em;
+  margin-bottom: 1em;
+  font-weight: bold;
+  font-size: 2rem;
+}
+
+.book-container {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto;
+  grid-auto-rows: auto;
+  gap: 0.5em;
+  margin-bottom: 1em;
+}
+
+.container {
+  margin: 2em auto;
+  width: 100%;
+  grid-column: 1/2;
+  display: grid;
+  grid-template-columns: 2em auto 2em;
+  grid-template-rows: 30em auto;
+}
+
+img {
+  width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+  object-position: center;
+  grid-column: 2/3;
+  grid-row: 1/2;
+  display: block;
+}
+
+.content {
+  box-shadow: 5px 5px 5px $shade4;
+  background-color: $shade1;
+  grid-column: 2/3;
+  grid-row: 2/3;
+  padding: 2em 1em;
+  font-family: "Montserrat";
+  position: relative;
+}
+
+.content::before {
+  position: absolute;
+  content: "";
+  background: $shade4;
+  width: 5px;
+  height: 30%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.title {
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 1.5em;
+  margin-bottom: 0;
+}
+
+.author {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.price {
+  margin-bottom: 0;
+  text-align: left;
+  font-weight: 500;
+  background: $shade5;
+  color: $shade1;
+  font-size: 1.5rem;
+  padding: 0.2em 0.5em;
+  border-radius: 2em;
+  display: inline-block;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media screen and (min-width: 650px) {
+  .container {
+    grid-template-columns: 1fr 13em 450px 1fr;
+    grid-template-rows: auto;
+    margin-bottom: 0;
+  }
+
+  img {
+    grid-column: 2/3;
+    grid-row: 1/2;
+  }
+
+  .content {
+    grid-column: 3/4;
+    grid-row: 1/2;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .footer {
+    margin-top: auto;
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 1250px) {
+  .book-container {
+    margin-bottom: 2em;
+    grid-template-columns: auto auto;
+    gap: 0;
+  }
+
+  .container {
+    grid-column: auto;
+  }
+}
