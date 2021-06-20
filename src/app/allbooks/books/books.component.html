@@ -1,5 +1,5 @@
-<div *ngFor="let book of books">
-  <div class="container">
+<div class="book-container">
+  <div *ngFor="let book of books" class="container">
     <img [src]="book.imageUrl" />
     <div class="content">
       <p class="title">{{ book.title }}</p>

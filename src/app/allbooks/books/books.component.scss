@@ -5,9 +5,18 @@ $shade4: #869da3;
 $shade5: #618180;
 $shade6: #43655a;
 
+.book-container {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto;
+  grid-auto-rows: auto;
+  gap: 0.5em;
+}
+
 .container {
   margin: 2em auto;
   width: 100%;
+  grid-column: 1/2;
   display: grid;
   grid-template-columns: 2em auto 2em;
   grid-template-rows: 30em auto;
@@ -49,6 +58,7 @@ img {
   font-weight: 700;
   font-size: 2rem;
   line-height: 1.5em;
+  margin-bottom: 0;
 }
 
 .author {
@@ -78,6 +88,7 @@ img {
   .container {
     grid-template-columns: 1fr 13em 450px 1fr;
     grid-template-rows: auto;
+    margin-bottom: 0;
   }
 
   img {
@@ -88,19 +99,26 @@ img {
   .content {
     grid-column: 3/4;
     grid-row: 1/2;
-    // padding: 1em 1em;
     max-height: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
   }
 
-  .title {
-    margin-bottom: 0;
-  }
-
   .footer {
     margin-top: auto;
     width: 100%;
+  }
+}
+
+@media screen and (min-width: 1250px) {
+  .book-container {
+    margin-bottom: 2em;
+    grid-template-columns: auto auto;
+    gap: 0;
+  }
+
+  .container {
+    grid-column: auto;
   }
 }
