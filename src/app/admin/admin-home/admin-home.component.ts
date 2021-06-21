@@ -8,14 +8,19 @@ import { IUser, IUserBooks } from "src/app/interfaces/User";
 import { AdminService } from "src/app/service/admin/admin.service";
 import { IBook } from "../../interfaces/Book";
 
+// importing
+
 @Component({
   selector: "app-admin-home",
   templateUrl: "./admin-home.component.html",
-  styleUrls: ["./admin-home.component.scss"],
+  styleUrls: [
+    "./admin-home.component.scss",
+    "../../allbooks/books/books.component.scss",
+  ],
 })
 export class AdminHomeComponent implements OnInit, OnDestroy {
   users: IUser[];
-  users_filtered: IUser[];
+  users_filtered: any;
   book_sub: Subscription;
   user_sub: Subscription;
   createBookForm: FormGroup;
@@ -61,8 +66,6 @@ export class AdminHomeComponent implements OnInit, OnDestroy {
           }
           return;
         });
-
-        console.log("filtered ", this.users_filtered);
       });
   }
 

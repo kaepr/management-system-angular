@@ -10,7 +10,10 @@ import { SnackService } from "src/app/service/snack/snack.service";
 @Component({
   selector: "app-allbooks",
   templateUrl: "./allbooks.component.html",
-  styleUrls: ["./allbooks.component.scss"],
+  styleUrls: [
+    "./allbooks.component.scss",
+    "../../allbooks/books/books.component.scss",
+  ],
 })
 export class AllbooksComponent implements OnInit, OnDestroy {
   issued_books: IUserBooks[] | undefined;
