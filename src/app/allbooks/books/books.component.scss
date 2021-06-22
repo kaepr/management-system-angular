@@ -5,6 +5,41 @@ $shade4: #869da3;
 $shade5: #618180;
 $shade6: #43655a;
 
+.search-area-container {
+  width: 90%;
+  margin: 1em auto;
+  padding: 0 2em;
+  padding-top: 1em;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.search-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.search-area label {
+  margin-bottom: 1em;
+  font-size: 1.4rem;
+}
+
+.button-control {
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 350px;
+}
+
+.button-control button {
+  display: inline-block;
+  margin: 0 2em;
+}
+
 .book-container {
   width: 100%;
   display: grid;

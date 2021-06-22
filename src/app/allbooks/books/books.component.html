@@ -1,5 +1,50 @@
+<div class="search-area-container">
+  <div class="search-area">
+    <label>Search By Title </label
+    ><mat-form-field [color]="'accent'">
+      <input
+        matInput
+        [(ngModel)]="searchData.title"
+        type="text"
+        placeholder="Title"
+        autocomplete="off"
+      />
+    </mat-form-field>
+  </div>
+  <div class="search-area">
+    <label>Search By Description </label
+    ><mat-form-field [color]="'accent'">
+      <input
+        matInput
+        [(ngModel)]="searchData.description"
+        type="text"
+        placeholder="Description"
+        autocomplete="off"
+      />
+    </mat-form-field>
+  </div>
+  <div class="button-control">
+    <button
+      [disabled]="loading"
+      color="accent"
+      mat-raised-button
+      (click)="filterData()"
+    >
+      Search
+    </button>
+    <button
+      [disabled]="loading"
+      color="accent"
+      mat-raised-button
+      (click)="clearData()"
+    >
+      Clear
+    </button>
+  </div>
+</div>
+
 <div class="book-container">
-  <div *ngFor="let book of books" class="container">
+  <div *ngFor="let book of filtered_books" class="container">
     <img [src]="book.imageUrl" />
     <div class="content">
       <p class="title">{{ book.title }}</p>

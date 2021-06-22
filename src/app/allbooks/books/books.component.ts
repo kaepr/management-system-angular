@@ -16,12 +16,14 @@ import { SnackService } from "src/app/service/snack/snack.service";
 })
 export class BooksComponent implements OnInit, OnDestroy {
   public books: IBook[];
+  public filtered_books: any;
   public user: IUser;
   private book_sub: Subscription;
   private user_sub: Subscription;
   public loading: boolean;
   public user_uid: string = JSON.parse(localStorage.getItem("user") || "{}")
     .uid;
+  public searchData: { title: string; description: string };
 
   constructor(
     public adminService: AdminService,
@@ -36,6 +38,7 @@ export class BooksComponent implements OnInit, OnDestroy {
       .getAllBooks()
       .subscribe((books: IBook[]) => {
         this.books = books;
+        this.filtered_books = books;
       });
 
     this.user_sub = this.afs
@@ -44,6 +47,43 @@ export class BooksComponent implements OnInit, OnDestroy {
       .subscribe((data: any) => {
         this.user = data;
       });
+
+    this.searchData = {
+      title: "",
+      description: "",
+    };
+  }
+
+  filterData() {
+    console.log("data = ", this.searchData);
+    let new_books = this.books;
+    if (this.searchData.title.length > 0) {
+      new_books = new_books.filter((item) => {
+        if (item.title?.includes(this.searchData.title)) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+    }
+
+    if (this.searchData.description.length > 0) {
+      new_books = new_books.filter((item) => {
+        if (item.description?.includes(this.searchData.description)) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+    }
+
+    this.filtered_books = new_books;
+  }
+
+  clearData() {
+    this.filtered_books = this.books;
+    this.searchData.title = "";
+    this.searchData.description = "";
   }
 
   async issueBook(bookData: IBook) {
