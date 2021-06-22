@@ -122,7 +122,7 @@ export class AdminHomeComponent implements OnInit, OnDestroy {
       await this.afs.doc(`users/${user?.uid}`).update(current_user);
     } catch (err) {
       this.snack.bookError("Error in allowing issue");
-      console.log("Error in updating issue info", err);
+      // console.log("Error in updating issue info", err);
     }
 
     this.loading = false;

@@ -85,7 +85,7 @@ export class AuthService {
       this.router.navigate(["login"]);
       this.isUserAdmin = false;
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
     return;
   }

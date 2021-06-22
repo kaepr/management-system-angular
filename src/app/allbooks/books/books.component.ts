@@ -51,7 +51,7 @@ export class BooksComponent implements OnInit, OnDestroy {
     let exists: boolean = false;
 
     this.user.books?.filter((book) => {
-      console.log("book", book);
+      // console.log("book", book);
       if (bookData.id == book.book.id) {
         exists = true;
       }
@@ -72,7 +72,8 @@ export class BooksComponent implements OnInit, OnDestroy {
       });
       await this.afs.doc(`users/${this.user_uid}`).update({ books: userBooks });
     } catch (err) {
-      console.log("Error while updating", err);
+      this.snack.bookError("Error while adding book");
+      // console.log("Error while adding book", err);
     }
 
     this.loading = false;

@@ -101,7 +101,7 @@ export class EditBookComponent implements OnInit {
       this.snack.generalMessage("Book successfully updated");
     } catch (err) {
       this.snack.generalMessage("Error in updating book");
-      console.log("Error in updating book");
+      // console.log("Error in updating book");
     }
 
     this.onNoClick();
