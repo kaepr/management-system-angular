@@ -1,15 +1,80 @@
-<h1 mat-dialog-title>Hello</h1>
+<!-- <h1 mat-dialog-title>Hello</h1>
 <pre>
     {{ data | json }}
 </pre>
-<button mat-button (click)="onNoClick()">No Thanks</button>
-<!-- <div mat-dialog-content>
-  <p>What's your favorite color?</p>
-  <mat-form-field>
-    <input matInput [(ngModel)]="data.color" />
-  </mat-form-field>
-</div>
-<div mat-dialog-actions>
-  
-  <button mat-button [mat-dialog-close]="data.color" cdkFocusInitial>Ok</button>
-</div> -->
+<button mat-button (click)="onNoClick()">No Thanks</button> -->
+
+<mat-card class="card">
+  <h1>Update Book</h1>
+  <form [formGroup]="editForm" (ngSubmit)="updateBookData()" class="form">
+    <mat-form-field [color]="title?.valid && 'accent'">
+      <input
+        matInput
+        formControlName="title"
+        type="text"
+        placeholder="Title"
+        autocomplete="off"
+      />
+
+      <mat-error *ngIf="title?.invalid && title?.dirty">
+        Enter title for book
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field [color]="author?.valid && 'accent'">
+      <input
+        matInput
+        formControlName="author"
+        type="text"
+        placeholder="author"
+        autocomplete="off"
+      />
+
+      <mat-error *ngIf="author?.invalid && author?.dirty">
+        Enter author for book
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field [color]="description?.valid && 'accent'">
+      <textarea
+        matInput
+        formControlName="description"
+        type="text"
+        placeholder="description"
+        autocomplete="off"
+      ></textarea>
+
+      <mat-error *ngIf="description?.invalid && description?.dirty">
+        Description should be less than 200 characters
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field [color]="price?.valid && 'accent'">
+      <input
+        matInput
+        formControlName="price"
+        type="text"
+        placeholder="Price in Rupees"
+        autocomplete="off"
+      />
+
+      <mat-error *ngIf="price?.invalid && price?.dirty">
+        Enter price for book
+      </mat-error>
+    </mat-form-field>
+
+    <input type="file" (change)="uploadFile($event)" />
+    <div>{{ uploadPercent | async }}</div>
+
+    <img *ngIf="imgUrl.length !== 0" [src]="imgUrl" height="100" width="100" />
+
+    <button
+      mat-raised-button
+      color="accent"
+      type="submit"
+      [disabled]="editForm.invalid || loading || imgUrl.length === 0"
+    >
+      Create Book
+    </button>
+  </form>
+</mat-card>

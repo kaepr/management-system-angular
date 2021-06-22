@@ -1,0 +1,86 @@
+.card {
+  min-width: 200px;
+  max-width: 650px;
+  width: 90%;
+  margin: 2em auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1.25em 0;
+}
+
+h3 {
+  font-weight: bold;
+}
+
+.server-error {
+  margin: 0.5em 0;
+}
+
+.book-card {
+  max-width: 600px;
+  display: flex;
+  align-items: center;
+  padding: 1em;
+  margin: 1em;
+}
+
+.book-card img {
+  object-fit: cover;
+  max-height: 100%;
+  flex-basis: 40%;
+  max-width: 40%;
+}
+
+.book-info {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 0.5em;
+  line-height: 1.2;
+  flex-grow: 1;
+  min-height: 100%;
+  padding: 0 1.5em;
+}
+
+.title {
+  font-weight: 700;
+  font-size: 1.6rem;
+}
+
+.author {
+  font-weight: 400;
+  font-size: 1.2rem;
+  opacity: 0.8;
+}
+
+.book-footer {
+  margin-bottom: 0.25em;
+}
+
+.price {
+  font-size: 1.3rem;
+  justify-self: flex-end;
+}
+
+h1,
+h2 {
+  text-align: center;
+  font-family: "Montserrat";
+  margin: 2em 2em;
+  margin-bottom: 1em;
+  font-weight: bold;
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.3rem;
+}
