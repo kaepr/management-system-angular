@@ -4,9 +4,10 @@ import { CommonModule } from "@angular/common";
 import { BooksComponent } from "./books/books.component";
 import { AllBooksRoutingModule } from "./allbooks.routing.module";
 import { SharedModule } from "../shared/shared.module";
+import { EditBookComponent } from './edit-book/edit-book.component';
 
 @NgModule({
-  declarations: [BooksComponent],
+  declarations: [BooksComponent, EditBookComponent],
   imports: [CommonModule, AllBooksRoutingModule, SharedModule],
 })
 export class AllbooksModule {}
