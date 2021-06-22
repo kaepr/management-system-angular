@@ -12,12 +12,13 @@ import { SnackService } from "src/app/service/snack/snack.service";
   styleUrls: ["./books.component.scss"],
 })
 export class BooksComponent implements OnInit, OnDestroy {
-  books: IBook[];
-  user: IUser;
-  book_sub: Subscription;
-  user_sub: Subscription;
-  loading: boolean;
-  user_uid: string = JSON.parse(localStorage.getItem("user") || "{}").uid;
+  public books: IBook[];
+  public user: IUser;
+  private book_sub: Subscription;
+  private user_sub: Subscription;
+  public loading: boolean;
+  public user_uid: string = JSON.parse(localStorage.getItem("user") || "{}")
+    .uid;
 
   constructor(
     public adminService: AdminService,

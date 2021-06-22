@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-import { MatSnackBar } from "@angular/material/snack-bar";
+import { MatSnackBar, MatSnackBarConfig } from "@angular/material/snack-bar";
 import { tap } from "rxjs/operators";
 
 @Injectable({
@@ -12,12 +12,16 @@ export class SnackService {
   bookError(errorMessage: string) {
     this.snackBar.open(errorMessage, "OK", {
       duration: 4000,
+      horizontalPosition: "center",
+      verticalPosition: "top",
     });
   }
 
   authError() {
     this.snackBar.open("You must be logged in!", "OK", {
-      duration: 5000,
+      duration: 4000,
+      horizontalPosition: "center",
+      verticalPosition: "top",
     });
 
     return this.snackBar._openedSnackBarRef
@@ -28,7 +32,9 @@ export class SnackService {
 
   adminError() {
     this.snackBar.open("You do not have the authorization!", "OK", {
-      duration: 3000,
+      duration: 4000,
+      horizontalPosition: "center",
+      verticalPosition: "top",
     });
 
     return this.snackBar._openedSnackBarRef

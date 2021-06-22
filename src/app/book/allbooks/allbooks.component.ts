@@ -16,12 +16,13 @@ import { SnackService } from "src/app/service/snack/snack.service";
   ],
 })
 export class AllbooksComponent implements OnInit, OnDestroy {
-  issued_books: IUserBooks[] | undefined;
-  waiting_books: IUserBooks[] | undefined;
-  user: IUser;
-  user_sub: Subscription;
-  loading: boolean;
-  user_uid: string = JSON.parse(localStorage.getItem("user") || "{}").uid;
+  public issued_books: IUserBooks[] | undefined;
+  public waiting_books: IUserBooks[] | undefined;
+  public user: IUser;
+  private user_sub: Subscription;
+  public loading: boolean;
+  private user_uid: string = JSON.parse(localStorage.getItem("user") || "{}")
+    .uid;
 
   constructor(
     public adminService: AdminService,

@@ -19,16 +19,15 @@ import { IBook } from "../../interfaces/Book";
   ],
 })
 export class AdminHomeComponent implements OnInit, OnDestroy {
-  users: IUser[];
-  users_filtered: any;
-  book_sub: Subscription;
-  user_sub: Subscription;
-  createBookForm: FormGroup;
-  serverMessage: any;
-  loading: boolean;
-  uploadPercent: Observable<number | undefined>;
-  downloadURL: Observable<string>;
-  imgUrl: string = "";
+  public users: IUser[];
+  public users_filtered: any;
+  private user_sub: Subscription;
+  public createBookForm: FormGroup;
+  public serverMessage: any;
+  public loading: boolean;
+  public uploadPercent: Observable<number | undefined>;
+  public downloadURL: Observable<string>;
+  public imgUrl: string = "";
 
   constructor(
     public adminService: AdminService,
