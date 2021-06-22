@@ -17,6 +17,15 @@
         >
           Issue Book
         </button>
+        <button
+          *ngIf="auth.isUserAdmin"
+          [disabled]="loading"
+          color="accent"
+          mat-raised-button
+          (click)="openEditForm(book)"
+        >
+          Edit Book
+        </button>
       </div>
     </div>
   </div>

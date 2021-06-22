@@ -35,13 +35,13 @@
       </mat-form-field>
 
       <mat-form-field [color]="description?.valid && 'accent'">
-        <input
+        <textarea
           matInput
           formControlName="description"
           type="text"
           placeholder="description"
           autocomplete="off"
-        />
+        ></textarea>
 
         <mat-error *ngIf="description?.invalid && description?.dirty">
           Description should be less than 200 characters

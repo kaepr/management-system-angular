@@ -1,5 +1,8 @@
+import { AuthService } from "src/app/service/auth/auth.service";
+import { EditBookComponent } from "./../edit-book/edit-book.component";
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { AngularFirestore } from "@angular/fire/firestore";
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { Subscription } from "rxjs";
 import { IBook } from "src/app/interfaces/Book";
 import { IUser } from "src/app/interfaces/User";
@@ -23,7 +26,9 @@ export class BooksComponent implements OnInit, OnDestroy {
   constructor(
     public adminService: AdminService,
     public afs: AngularFirestore,
-    private snack: SnackService
+    private snack: SnackService,
+    private dialog: MatDialog,
+    public auth: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -43,8 +48,6 @@ export class BooksComponent implements OnInit, OnDestroy {
 
   async issueBook(bookData: IBook) {
     this.loading = true;
-    console.log("bookData = ", bookData);
-
     let exists: boolean = false;
 
     this.user.books?.filter((book) => {
@@ -73,6 +76,14 @@ export class BooksComponent implements OnInit, OnDestroy {
     }
 
     this.loading = false;
+  }
+
+  openEditForm(bookData: IBook) {
+    const editForm = new MatDialogConfig();
+    editForm.disableClose = true;
+    editForm.autoFocus = true;
+    editForm.data = bookData;
+    this.dialog.open(EditBookComponent, editForm);
   }
 
   ngOnDestroy(): void {

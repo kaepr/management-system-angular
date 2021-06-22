@@ -9,6 +9,14 @@ import { tap } from "rxjs/operators";
 export class SnackService {
   constructor(private snackBar: MatSnackBar, private router: Router) {}
 
+  generalMessage(msg: string) {
+    this.snackBar.open(msg, "OK", {
+      duration: 4000,
+      horizontalPosition: "center",
+      verticalPosition: "top",
+    });
+  }
+
   bookError(errorMessage: string) {
     this.snackBar.open(errorMessage, "OK", {
       duration: 4000,

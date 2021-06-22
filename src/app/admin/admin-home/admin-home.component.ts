@@ -1,3 +1,4 @@
+import { SnackService } from "src/app/service/snack/snack.service";
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { AngularFireStorage } from "@angular/fire/storage";
@@ -7,8 +8,6 @@ import { finalize } from "rxjs/operators";
 import { IUser, IUserBooks } from "src/app/interfaces/User";
 import { AdminService } from "src/app/service/admin/admin.service";
 import { IBook } from "../../interfaces/Book";
-
-// importing
 
 @Component({
   selector: "app-admin-home",
@@ -33,18 +32,16 @@ export class AdminHomeComponent implements OnInit, OnDestroy {
     public adminService: AdminService,
     private fb: FormBuilder,
     public afs: AngularFirestore,
-    private storage: AngularFireStorage
+    private storage: AngularFireStorage,
+    public snack: SnackService
   ) {}
 
   ngOnInit(): void {
     this.createBookForm = this.fb.group({
-      title: ["Book Title", [Validators.required]],
-      author: ["Author Name", [Validators.required]],
-      description: [
-        "Book description",
-        [Validators.required, Validators.maxLength(200)],
-      ],
-      price: ["150", [Validators.required]],
+      title: ["", [Validators.required]],
+      author: ["", [Validators.required]],
+      description: ["", [Validators.required, Validators.maxLength(200)]],
+      price: ["", [Validators.required]],
     });
 
     this.user_sub = this.afs
@@ -109,7 +106,10 @@ export class AdminHomeComponent implements OnInit, OnDestroy {
     this.loading = true;
 
     try {
-      const updatedBooks = user?.books?.filter((book) => {
+      const cur_user = this.users.filter((item) => item.uid == user.uid);
+      let current_user = cur_user[0];
+
+      const updatedBooks = current_user?.books?.map((book) => {
         if (book.issueId == bookId) {
           book.issued = true;
           return book;
@@ -118,9 +118,10 @@ export class AdminHomeComponent implements OnInit, OnDestroy {
         }
       });
 
-      user.books = updatedBooks;
-      await this.afs.doc(`users/${user?.uid}`).update(user);
+      current_user.books = updatedBooks;
+      await this.afs.doc(`users/${user?.uid}`).update(current_user);
     } catch (err) {
+      this.snack.bookError("Error in allowing issue");
       console.log("Error in updating issue info", err);
     }
 
@@ -141,9 +142,11 @@ export class AdminHomeComponent implements OnInit, OnDestroy {
         price,
         imageUrl: this.imgUrl,
       });
+      this.snack.generalMessage("Created Book Successfully !");
     } catch (err) {
       this.serverMessage = err;
     }
+    this.createBookForm.reset();
     this.imgUrl = "";
     this.loading = false;
   }

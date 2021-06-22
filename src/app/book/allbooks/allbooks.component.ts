@@ -37,7 +37,7 @@ export class AllbooksComponent implements OnInit, OnDestroy {
       .valueChanges()
       .subscribe((data: any) => {
         this.user = data;
-
+        console.log("user = ", data);
         this.issued_books = this.user.books?.filter((item) => item.issued);
         this.waiting_books = this.user.books?.filter((item) => !item.issued);
       });
