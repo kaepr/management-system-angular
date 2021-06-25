@@ -1,7 +1,8 @@
+import { BookService } from "./../../service/books/book.service";
+import { UserService } from "./../../service/user/user.service";
 import { AuthService } from "src/app/service/auth/auth.service";
 import { EditBookComponent } from "./../edit-book/edit-book.component";
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { AngularFirestore } from "@angular/fire/firestore";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { Subscription } from "rxjs";
 import { IBook } from "src/app/interfaces/Book";
@@ -27,10 +28,11 @@ export class BooksComponent implements OnInit, OnDestroy {
 
   constructor(
     public adminService: AdminService,
-    public afs: AngularFirestore,
     private snack: SnackService,
     private dialog: MatDialog,
-    public auth: AuthService
+    public auth: AuthService,
+    public userService: UserService,
+    private bookService: BookService
   ) {}
 
   ngOnInit(): void {
@@ -41,9 +43,8 @@ export class BooksComponent implements OnInit, OnDestroy {
         this.filtered_books = books;
       });
 
-    this.user_sub = this.afs
-      .doc(`users/${this.user_uid}`)
-      .valueChanges()
+    this.user_sub = this.userService
+      .getUserData(this.user_uid)
       .subscribe((data: any) => {
         this.user = data;
       });
@@ -55,7 +56,6 @@ export class BooksComponent implements OnInit, OnDestroy {
   }
 
   filterData() {
-    console.log("data = ", this.searchData);
     let new_books = this.books;
     if (this.searchData.title.length > 0) {
       new_books = new_books.filter((item) => {
@@ -91,7 +91,6 @@ export class BooksComponent implements OnInit, OnDestroy {
     let exists: boolean = false;
 
     this.user.books?.filter((book) => {
-      // console.log("book", book);
       if (bookData.id == book.book.id) {
         exists = true;
       }
@@ -104,16 +103,9 @@ export class BooksComponent implements OnInit, OnDestroy {
     }
 
     try {
-      const userBooks = this.user.books;
-      userBooks?.push({
-        issued: false,
-        book: bookData,
-        issueId: this.afs.createId(),
-      });
-      await this.afs.doc(`users/${this.user_uid}`).update({ books: userBooks });
+      await this.bookService.issueBook(this.user_uid, bookData, this.user);
     } catch (err) {
       this.snack.bookError("Error while adding book");
-      // console.log("Error while adding book", err);
     }
 
     this.loading = false;

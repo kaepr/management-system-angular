@@ -44,25 +44,27 @@ export class AdminHomeComponent implements OnInit, OnDestroy {
       price: ["", [Validators.required]],
     });
 
-    this.user_sub = this.afs
-      .collection("users")
-      .valueChanges()
-      .subscribe((users: any) => {
-        this.users = users;
-        this.users_filtered = this.users?.map((user) => {
-          const books: any = user.books?.filter((item) => !item.issued);
-          if (books?.length > 0) {
-            const obj: IUser = {
-              email: user.email,
-              books: books,
-              isAdmin: user.isAdmin,
-              uid: user.uid,
-            };
-            return obj;
-          }
-          return;
-        });
-      });
+    this.user_sub = this.adminService.getAllUsers().subscribe((users: any) => {
+      this.users = users;
+      this.users_filtered = this.getFilteredUsers(users);
+    });
+  }
+
+  getFilteredUsers(users: IUser[]) {
+    let users_filtered = users?.map((user) => {
+      const books: any = user.books?.filter((item) => !item.issued);
+      if (books?.length > 0) {
+        const obj: IUser = {
+          email: user.email,
+          books: books,
+          isAdmin: user.isAdmin,
+          uid: user.uid,
+        };
+        return obj;
+      }
+      return;
+    });
+    return users_filtered;
   }
 
   uploadFile(event: any) {
@@ -106,23 +108,9 @@ export class AdminHomeComponent implements OnInit, OnDestroy {
     this.loading = true;
 
     try {
-      const cur_user = this.users.filter((item) => item.uid == user.uid);
-      let current_user = cur_user[0];
-
-      const updatedBooks = current_user?.books?.map((book) => {
-        if (book.issueId == bookId) {
-          book.issued = true;
-          return book;
-        } else {
-          return book;
-        }
-      });
-
-      current_user.books = updatedBooks;
-      await this.afs.doc(`users/${user?.uid}`).update(current_user);
+      this.adminService.allowBookIssue(this.users, user, bookId);
     } catch (err) {
       this.snack.bookError("Error in allowing issue");
-      // console.log("Error in updating issue info", err);
     }
 
     this.loading = false;

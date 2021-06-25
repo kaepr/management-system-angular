@@ -1,10 +1,8 @@
+import { BookService } from "./../../service/books/book.service";
+import { UserService } from "./../../service/user/user.service";
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { AdminService } from "src/app/service/admin/admin.service";
 import { Subscription } from "rxjs";
-import { IBook } from "../../interfaces/Book";
 import { IUser, IUserBooks } from "../../interfaces/User";
-import { AngularFireAuth } from "@angular/fire/auth";
-import { AngularFirestore } from "@angular/fire/firestore";
 import { SnackService } from "src/app/service/snack/snack.service";
 
 @Component({
@@ -25,19 +23,16 @@ export class AllbooksComponent implements OnInit, OnDestroy {
     .uid;
 
   constructor(
-    public adminService: AdminService,
-    public auth: AngularFireAuth,
-    public afs: AngularFirestore,
-    private snack: SnackService
+    private snack: SnackService,
+    private userService: UserService,
+    private bookSerive: BookService
   ) {}
 
   ngOnInit(): void {
-    this.user_sub = this.afs
-      .doc(`users/${this.user_uid}`)
-      .valueChanges()
+    this.user_sub = this.userService
+      .getUserData(this.user_uid)
       .subscribe((data: any) => {
         this.user = data;
-        // console.log("user = ", data);
         this.issued_books = this.user.books?.filter((item) => item.issued);
         this.waiting_books = this.user.books?.filter((item) => !item.issued);
       });
@@ -45,16 +40,11 @@ export class AllbooksComponent implements OnInit, OnDestroy {
 
   async removeBook(issueId: string) {
     this.loading = true;
-    const updatedBooks = this.user.books?.filter((book) => {
-      if (book.issueId != issueId) {
-        return book;
-      }
-      return;
-    });
-
-    await this.afs
-      .doc(`users/${this.user_uid}`)
-      .update({ books: updatedBooks });
+    try {
+      await this.bookSerive.removeBook(issueId, this.user_uid, this.user);
+    } catch (err) {
+      this.snack.bookError("Error in removing book");
+    }
     this.loading = false;
   }
 

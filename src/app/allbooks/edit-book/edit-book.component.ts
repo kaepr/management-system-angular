@@ -1,3 +1,4 @@
+import { AdminService } from "src/app/service/admin/admin.service";
 import { SnackService } from "src/app/service/snack/snack.service";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { AngularFireStorage } from "@angular/fire/storage";
@@ -25,6 +26,7 @@ export class EditBookComponent implements OnInit {
     private fb: FormBuilder,
     private storage: AngularFireStorage,
     public afs: AngularFirestore,
+    private adminService: AdminService,
     public dialogRef: MatDialogRef<EditBookComponent>,
     @Inject(MAT_DIALOG_DATA) public data: IBook
   ) {}
@@ -97,11 +99,10 @@ export class EditBookComponent implements OnInit {
         imageUrl: this.imgUrl,
         price,
       };
-      await this.afs.doc(`books/${this.data.id}`).update(updatedBook);
+      await this.adminService.updateBook(this.data.id, updatedBook);
       this.snack.generalMessage("Book successfully updated");
     } catch (err) {
       this.snack.generalMessage("Error in updating book");
-      // console.log("Error in updating book");
     }
 
     this.onNoClick();
