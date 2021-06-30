@@ -7,7 +7,6 @@ import { Subscription, Observable } from "rxjs";
 import { finalize } from "rxjs/operators";
 import { IUser, IUserBooks } from "src/app/interfaces/User";
 import { AdminService } from "src/app/service/admin/admin.service";
-import { IBook } from "../../interfaces/Book";
 
 @Component({
   selector: "app-admin-home",

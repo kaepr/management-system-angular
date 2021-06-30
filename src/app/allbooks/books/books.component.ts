@@ -59,17 +59,10 @@ export class BooksComponent implements OnInit, OnDestroy {
     let new_books = this.books;
     if (this.searchData.title.length > 0) {
       new_books = new_books.filter((item) => {
-        if (item.title?.includes(this.searchData.title)) {
-          return true;
-        } else {
-          return false;
-        }
-      });
-    }
-
-    if (this.searchData.description.length > 0) {
-      new_books = new_books.filter((item) => {
-        if (item.description?.includes(this.searchData.description)) {
+        if (
+          item.title?.includes(this.searchData.title) ||
+          item.description?.includes(this.searchData.title)
+        ) {
           return true;
         } else {
           return false;

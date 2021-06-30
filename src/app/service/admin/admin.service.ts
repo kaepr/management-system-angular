@@ -2,10 +2,7 @@ import { IUser } from "src/app/interfaces/User";
 import { Injectable } from "@angular/core";
 import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestore } from "@angular/fire/firestore";
-import * as firebase from "firebase/app";
-import { switchMap, map } from "rxjs/operators";
 import { IBook } from "../../interfaces/Book";
-import { isNgContent } from "@angular/compiler";
 
 @Injectable({
   providedIn: "root",
